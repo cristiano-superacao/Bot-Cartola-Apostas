@@ -1,0 +1,14 @@
+# Bot Cartola Apostas
+
+## Como rodar
+1. Instale dependências: `npm install`
+2. Rode o projeto: `npm start`
+
+## Estrutura
+- `src/context/AppContext.jsx`: Estado global
+- `src/utils/`: Funções utilitárias
+- `src/components/`: Componentes visuais
+- `src/pages/`: Páginas principais
+
+## Contribuição
+- Faça um fork, crie uma branch e envie um PR.

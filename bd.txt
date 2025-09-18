@@ -1,0 +1,9 @@
+/bot_Cartola_Apostas
+  /backend
+    server.js
+    database.js
+    /models
+      aposta.js
+      time.js
+  /frontend
+    (seu projeto React atual)
