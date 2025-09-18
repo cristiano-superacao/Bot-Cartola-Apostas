@@ -1,11 +1,26 @@
 // backend/server.js
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const db = require('./database');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the static directory
+app.use('/static', express.static(path.join(__dirname, 'static')));
+
+// Serve src files (for development - in production these would be bundled)
+app.use('/src', express.static(path.join(__dirname, 'src')));
+
+// Serve other static files from root directory
+app.use(express.static(__dirname));
+
+// Serve the main HTML file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Rotas para apostas
 app.get('/apostas', (req, res) => {
