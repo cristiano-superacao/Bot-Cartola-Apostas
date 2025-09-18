@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Cartola Apostas - Gestão de Apostas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2a5298;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .form-section, .list-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #2a5298;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #e1e5e9;
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        input, select {
+            padding: 0.8rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+        
+        .btn {
+            background: #2a5298;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background: #1e3c72;
+        }
+        
+        .apostas-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .aposta-card {
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .aposta-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .aposta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .team-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2a5298;
+        }
+        
+        .value {
+            background: #28a745;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .aposta-details {
+            display: flex;
+            justify-content: space-between;
+            color: #6c757d;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #6c757d;
+            padding: 3rem;
+        }
+        
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚽ Bot Cartola Apostas</h1>
+            <p>Sistema de Gestão de Apostas Esportivas</p>
+        </div>
+        
+        <div class="content">
+            <!-- Form Section -->
+            <div class="form-section">
+                <h2 class="section-title">📝 Nova Aposta</h2>
+                <form id="apostaForm" action="/apostas" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="nome_time">Nome do Time</label>
+                            <input type="text" id="nome_time" name="nome_time" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="campeonato">Campeonato</label>
+                            <select id="campeonato" name="campeonato" required>
+                                <option value="">Selecione o campeonato</option>
+                                <option value="Brasileirão">Brasileirão</option>
+                                <option value="Premier League">Premier League</option>
+                                <option value="Champions League">Champions League</option>
+                                <option value="Copa do Brasil">Copa do Brasil</option>
+                                <option value="Libertadores">Libertadores</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="valor">Valor da Aposta (R$)</label>
+                            <input type="number" id="valor" name="valor" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">💰 Registrar Aposta</button>
+                </form>
+            </div>
+            
+            <!-- List Section -->
+            <div class="list-section">
+                <h2 class="section-title">📊 Apostas Registradas</h2>
+                <div id="apostasContainer" class="apostas-list">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <p>Carregando apostas...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load apostas on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadApostas();
+        });
+        
+        // Load apostas from API
+        async function loadApostas() {
+            try {
+                const response = await fetch('/apostas');
+                const apostas = await response.json();
+                displayApostas(apostas);
+            } catch (error) {
+                console.error('Erro ao carregar apostas:', error);
+                document.getElementById('apostasContainer').innerHTML = `
+                    <div class="empty-state">
+                        <p>❌ Erro ao carregar apostas</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Display apostas
+        function displayApostas(apostas) {
+            const container = document.getElementById('apostasContainer');
+            
+            if (apostas.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                        </svg>
+                        <p>Nenhuma aposta registrada ainda</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = apostas.map(aposta => `
+                <div class="aposta-card">
+                    <div class="aposta-header">
+                        <div class="team-name">${aposta.nome_time}</div>
+                        <div class="value">R$ ${parseFloat(aposta.valor).toFixed(2)}</div>
+                    </div>
+                    <div class="aposta-details">
+                        <span>🏆 ${aposta.campeonato}</span>
+                        <span>📅 ${new Date(aposta.data).toLocaleDateString('pt-BR')}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Handle form submission
+        document.getElementById('apostaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch('/apostas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    // Reset form and reload apostas
+                    this.reset();
+                    loadApostas();
+                } else {
+                    const error = await response.json();
+                    alert('Erro: ' + error.erro);
+                }
+            } catch (error) {
+                console.error('Erro ao criar aposta:', error);
+                alert('Erro ao criar aposta');
+            }
+        });
+    </script>
+</body>
+</html>
