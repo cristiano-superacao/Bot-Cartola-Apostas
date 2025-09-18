@@ -14,6 +14,7 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
 /* Container for responsive layout */
@@ -21,6 +22,29 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+/* Loading screen for React app */
+#root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #22c55e;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Basic responsive grid */
@@ -51,21 +75,24 @@ body {
 
 /* Typography responsive styles */
 h1 {
-  font-size: 2rem;
+  font-size: 1.875rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: #1f2937;
 }
 
 h2 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
+  color: #374151;
 }
 
 h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  color: #374151;
 }
 
 @media (min-width: 768px) {
@@ -82,33 +109,104 @@ h3 {
   }
 }
 
-/* Basic button styles */
+/* Enhanced button styles */
 button {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
-/* Basic card styles */
+button:active {
+  transform: translateY(0);
+}
+
+/* Enhanced card styles */
 .card {
   background: white;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
 }
 
 .card:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Hero section styling */
+.hero-gradient {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.hero-gradient h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .hero-gradient h1 {
+    font-size: 3.5rem;
+  }
+}
+
+/* Stats cards */
+.stats-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+/* Navigation improvements */
+.nav-mobile {
+  display: block;
+}
+
+.nav-desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav-mobile {
+    display: none;
+  }
+  
+  .nav-desktop {
+    display: flex;
+  }
+}
+
+/* Form elements */
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
 }
 
 /* Loading states */
@@ -131,7 +229,7 @@ button:focus,
 input:focus,
 select:focus,
 textarea:focus {
-  outline: 2px solid #3B82F6;
+  outline: 2px solid #22c55e;
   outline-offset: 2px;
 }
 
@@ -147,7 +245,12 @@ textarea:focus {
   
   button {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.875rem;
+    font-size: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
   }
 }
 
@@ -158,70 +261,46 @@ img {
 }
 
 /* Basic utility classes */
-.text-center {
-  text-align: center;
-}
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.hidden { display: none; }
+.block { display: block; }
+.flex { display: flex; }
+.justify-center { justify-content: center; }
+.items-center { align-items: center; }
+.space-between { justify-content: space-between; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.p-2 { padding: 0.5rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
 
-.text-left {
-  text-align: left;
-}
+/* Color scheme for FutAnalytics brand */
+.text-primary { color: #22c55e; }
+.text-secondary { color: #6b7280; }
+.bg-primary { background-color: #22c55e; }
+.bg-secondary { background-color: #f3f4f6; }
 
-.text-right {
-  text-align: right;
-}
-
-.hidden {
-  display: none;
-}
-
-.block {
-  display: block;
-}
-
-.flex {
-  display: flex;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.space-between {
-  justify-content: space-between;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.h-full {
-  height: 100%;
-}
-
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-
-.mb-4 {
-  margin-bottom: 1rem;
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
-
-.p-2 {
-  padding: 0.5rem;
-}
-
-.p-4 {
+/* Error state */
+.error {
+  color: #dc2626;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
   padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
 }
 
-.p-6 {
-  padding: 1.5rem;
+/* Success state */
+.success {
+  color: #065f46;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
 }
