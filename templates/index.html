@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Cartola Apostas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .result {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+            min-height: 100px;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-style: italic;
+        }
+        
+        .team-formation {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .player {
+            background: #667eea;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        .bet-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .confidence {
+            background: #48bb78;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        
+        .odds {
+            background: #ed8936;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        
+        @media (max-width: 768px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 Bot Cartola Apostas</h1>
+            <p>Gerador de apostas e times para Cartola, Premier League e Champions League</p>
+        </div>
+        
+        <div class="cards">
+            <div class="card">
+                <h2>⚽ Time Cartola</h2>
+                <button class="btn" onclick="generateCartolaTeam()">Gerar Time</button>
+                <div id="cartola-result" class="result">
+                    <p style="text-align: center; color: #666;">Clique para gerar um time aleatório</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</h2>
+                <button class="btn" onclick="generatePremierBet()">Gerar Aposta</button>
+                <div id="premier-result" class="result">
+                    <p style="text-align: center; color: #666;">Clique para gerar uma sugestão de aposta</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>🌟 Champions League</h2>
+                <button class="btn" onclick="generateChampionsBet()">Gerar Aposta</button>
+                <div id="champions-result" class="result">
+                    <p style="text-align: center; color: #666;">Clique para gerar uma sugestão de aposta</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <button class="btn" onclick="generateAll()" style="max-width: 300px; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                🎯 Gerar Todas as Sugestões
+            </button>
+        </div>
+    </div>
+
+    <script>
+        async function generateCartolaTeam() {
+            const resultDiv = document.getElementById('cartola-result');
+            resultDiv.innerHTML = '<p class="loading">Gerando time...</p>';
+            
+            try {
+                const response = await fetch('/api/cartola-team');
+                const team = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h3>💚 Time Gerado:</h3>
+                    <div class="team-formation">
+                        <div class="player">🥅 ${team.goleiro}</div>
+                        <div class="player">🛡️ ${team.zagueiro1}</div>
+                        <div class="player">🛡️ ${team.zagueiro2}</div>
+                        <div class="player">↔️ ${team.lateral1}</div>
+                        <div class="player">↔️ ${team.lateral2}</div>
+                        <div class="player">⚽ ${team.meia1}</div>
+                        <div class="player">⚽ ${team.meia2}</div>
+                        <div class="player">🎯 ${team.atacante1}</div>
+                        <div class="player">🎯 ${team.atacante2}</div>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color: red;">Erro ao gerar time. Tente novamente.</p>';
+            }
+        }
+        
+        async function generatePremierBet() {
+            const resultDiv = document.getElementById('premier-result');
+            resultDiv.innerHTML = '<p class="loading">Gerando aposta...</p>';
+            
+            try {
+                const response = await fetch('/api/premier-league-bet');
+                const bet = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h3>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Sugestão de Aposta:</h3>
+                    <p><strong>Partida:</strong> ${bet.match}</p>
+                    <p><strong>Aposta:</strong> ${bet.bet_type}</p>
+                    <div class="bet-info">
+                        <span class="confidence">Confiança: ${bet.confidence}%</span>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color: red;">Erro ao gerar aposta. Tente novamente.</p>';
+            }
+        }
+        
+        async function generateChampionsBet() {
+            const resultDiv = document.getElementById('champions-result');
+            resultDiv.innerHTML = '<p class="loading">Gerando aposta...</p>';
+            
+            try {
+                const response = await fetch('/api/champions-league-bet');
+                const bet = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <h3>🌟 Sugestão de Aposta:</h3>
+                    <p><strong>Partida:</strong> ${bet.match}</p>
+                    <p><strong>Aposta:</strong> ${bet.bet_type}</p>
+                    <div class="bet-info">
+                        <span class="confidence">Confiança: ${bet.confidence}%</span>
+                        <span class="odds">Odds: ${bet.odds}</span>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = '<p style="color: red;">Erro ao gerar aposta. Tente novamente.</p>';
+            }
+        }
+        
+        async function generateAll() {
+            await Promise.all([
+                generateCartolaTeam(),
+                generatePremierBet(),
+                generateChampionsBet()
+            ]);
+        }
+    </script>
+</body>
+</html>
