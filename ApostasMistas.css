@@ -1,0 +1,35 @@
+.apostas-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.apostas-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.apostas-form input {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.apostas-list {
+  list-style: none;
+  padding: 0;
+}
+
+@media (max-width: 600px) {
+  .apostas-container {
+    max-width: 95vw;
+    padding: 0.5rem;
+  }
+  .apostas-form {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

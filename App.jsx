@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import Fantasy from './pages/Fantasy'
 import Betting from './pages/Betting'
 import History from './pages/History'
+import ApostasMistas from './components/ApostasMistas'
 import './App.css'
 
 const DATA_INICIO_TEMPORADA = '2025-04-01'
@@ -55,6 +56,7 @@ function App() {
               <Route path="/apostas" element={<Betting />} />
               <Route path="/historico" element={<History />} />
             </Routes>
+            <ApostasMistas />
           </main>
           <Footer />
         </div>
