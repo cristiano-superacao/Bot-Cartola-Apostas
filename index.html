@@ -11,28 +11,3 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-
-import React, { useState } from 'react';
-import { getCurrentDate, getCurrentRound } from './utils/dateUtils';
-
-function App() {
-  const [data, setData] = useState(getCurrentDate());
-  const [rodada, setRodada] = useState(getCurrentRound('2025-04-01')); // Ajuste a data de início
-
-  const atualizarDados = () => {
-    setData(getCurrentDate());
-    setRodada(getCurrentRound('2025-04-01'));
-    // Aqui você pode disparar a atualização dos dados dos campeonatos
-  };
-
-  return (
-    <div>
-      <button onClick={atualizarDados}>Atualizar Campeonatos</button>
-      <p>Data atual: {data.dia}/{data.mes}/{data.ano}</p>
-      <p>Rodada atual: {rodada}</p>
-      {/* ...restante do seu código... */}
-    </div>
-  );
-}
-
-export default App;
