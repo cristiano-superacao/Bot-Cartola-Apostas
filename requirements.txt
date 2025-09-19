@@ -1,6 +1,7 @@
-Flask
-Flask-SQLAlchemy
-Flask-CORS
-python-dotenv
+Flask>=2.0
+Flask-SQLAlchemy>=3.0
+Flask-CORS>=4.0
+SQLAlchemy>=2.0
+python-dotenv>=1.0
 gunicorn
-psycopg2-binary
+psycopg2-binary>=2.8
