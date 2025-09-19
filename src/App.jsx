@@ -8,7 +8,6 @@ import Home from './pages/Home'
 import Fantasy from './pages/Fantasy'
 import Betting from './pages/Betting'
 import History from './pages/History'
-import './App.css'
 
 const DATA_INICIO_TEMPORADA = '2025-04-01'
 
