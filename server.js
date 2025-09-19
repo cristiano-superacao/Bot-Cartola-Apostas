@@ -1,8 +1,31 @@
 // backend/server.js
-const express = require('express');
-const cors = require('cors');
-const db = require('./database');
+import express from 'express';
+import cors from 'cors';
+import Database from 'sqlite3';
+const { Database: DB } = Database;
+
 const app = express();
+
+// Initialize database
+const db = new DB('./database.db', (err) => {
+  if (err) {
+    console.error('Erro ao conectar ao banco de dados:', err.message);
+  } else {
+    console.log('Conectado ao banco de dados SQLite.');
+    
+    // Create tables if they don't exist
+    db.run(`CREATE TABLE IF NOT EXISTS apostas (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      descricao TEXT NOT NULL
+    )`);
+    
+    db.run(`CREATE TABLE IF NOT EXISTS times (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT NOT NULL,
+      jogadores TEXT NOT NULL
+    )`);
+  }
+});
 
 app.use(cors());
 app.use(express.json());
